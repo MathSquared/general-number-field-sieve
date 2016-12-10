@@ -1,16 +1,12 @@
 #include <iostream>
 
-#include <boost/multiprecision/cpp_int.hpp>
-
-namespace {
-    namespace mp = boost::multiprecision;
-}
+#include <NTL/ZZ.h>
 
 int main(int argc, char** argv) {
-    mp::cpp_int n;  // number to factor
+    NTL::ZZ n;  // number to factor
     std::cin >> n;
 
     // do the thing
 
-    std::cout << "something";
+    std::cout << "something" << std::endl;
 }

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(gnfs)
 
+set(CMAKE_CXX_FLAGS "-std=c++0x")
+
 file(GLOB_RECURSE SOURCES src/*)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)

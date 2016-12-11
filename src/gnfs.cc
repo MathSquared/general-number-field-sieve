@@ -1,8 +1,19 @@
 #include "gnfs.h"
 
+#include "parameters.h"
+
+namespace {
+    using namespace NTL;
+}
+
 namespace gnfs {
-    NTL::ZZ factor(NTL::ZZ n) {
+    ZZ factor(ZZ n) {
         // Set parameters: d,B,m,f.
+        long d = param_d(n);
+        long B = param_B(n);
+        auto mf = param_mf(n, d);
+        ZZ m = mf.first;
+        ZZX f = mf.second;
 
         // Check if f is irreducible.
 

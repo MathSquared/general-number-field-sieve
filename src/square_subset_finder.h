@@ -7,6 +7,8 @@
 #include <NTL/mat_GF2.h>
 #include <NTL/vec_GF2.h>
 
+#include "smooth_pair_finder.h"
+
 namespace gnfs {
     // Reads exponent vectors until it finds a subset whose product is square.
     //
@@ -18,6 +20,11 @@ namespace gnfs {
     template <typename RowGenerator>
     class SquareSubsetFinder {
       public:
+        // To use rg_ instead of the declval stuff,
+        // I have to declare Index after rg_,
+        // but then get() can't use Index.
+        typedef decltype(std::declval<RowGenerator>().get().first) Index;
+
         SquareSubsetFinder(RowGenerator& rg) : rg_(rg), matrix_(NTL::INIT_SIZE, 0, rg.num_cols()), basis_cursor_(-1) { }
 
         // #TemplateMetaprogramming
@@ -25,14 +32,22 @@ namespace gnfs {
       private:
         RowGenerator& rg_;
         NTL::mat_GF2 matrix_;
+        std::vector<Index> indices_;
 
         // When we find a basis for the kernel, we store the basis here
         NTL::mat_GF2 basis_;
         // and where we are in it here. -1 means we don't yet have a basis.
+        // The cursor is where we last left off.
         NTL::ZZ basis_cursor_;
 
-        typedef decltype(rg_.get().first) Index;
+        // If true, we only return subsets that include
+        // the last row of the matrix.
+        // We use this after adding a row to matrix_
+        // to make sure we don't return sets that we've returned previously.
+        bool suppress_;
     };
+
+    template class SquareSubsetFinder<SmoothPairFinder>;
 }
 
 #endif

@@ -5,7 +5,7 @@
 
 namespace gnfs {
     // Finds a nontrivial factor of n.
-    NTL::ZZ factor(NTL::ZZ n);
+    NTL::ZZ find_factor(const NTL::ZZ& n);
 }
 
 #endif

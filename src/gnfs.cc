@@ -7,7 +7,7 @@ namespace {
 }
 
 namespace gnfs {
-    ZZ factor(ZZ n) {
+    ZZ find_factor(const ZZ& n) {
         // Set parameters: d,B,m,f.
         long d = param_d(n);
         long B = param_B(n);

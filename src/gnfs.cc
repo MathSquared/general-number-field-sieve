@@ -1,6 +1,7 @@
 #include "gnfs.h"
 
 #include "parameters.h"
+#include "setup.h"
 
 namespace {
     using namespace NTL;
@@ -16,6 +17,8 @@ namespace gnfs {
         ZZX f = mf.second;
 
         // Check if f is irreducible.
+        ZZ f_irred = check_f_irred(f, m);
+        if (f_irred != n) return f_irred;
 
         // Sieve until we have a suitable matrix.
 

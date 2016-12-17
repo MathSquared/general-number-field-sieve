@@ -45,6 +45,44 @@ namespace gnfs {
         }
     }
 
+    vec_GF2 SmoothPairFinder::generate_row(long a, long b) {
+        vec_GF2 ret;  // if this length != num_cols, invalid
+        // we always return ret so we can have the return value optimzn
+        // even if ret ends up being invalid
+
+        // Modular factorbase and -1.
+        ZZ ammb = a - m_ * b;
+        ammb %= n_;
+
+        if (ammb < 0) {
+            ammb *= -1;
+            ret.append(GF2(1));
+        } else {
+            ret.append(GF2(0));
+        }
+
+        // Prime factorization
+        for (const auto& p : cols_modular_) {
+            bool divcount = false;
+            while (ammb % p == 0) {
+                ammb /= p;
+                divcount ^= true;
+            }
+            ret.append(divcount ? GF2(1) : GF2(0));
+        }
+
+        if (ammb != 1) {
+            // ammb is not B-smooth
+
+            // make SURE the length is invalid
+            if (ret.length() == num_cols()) ret.append(GF2(0));
+            return ret;
+        }
+
+        // TODO do the algebraic factorbase portion
+        return ret;
+    }
+
     std::pair<std::pair<long, long>, vec_GF2> SmoothPairFinder::get() {
         // TODO
         return std::make_pair(std::make_pair(0, 0), vec_GF2(INIT_SIZE, num_cols()));

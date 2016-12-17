@@ -29,6 +29,12 @@ namespace gnfs {
         // returning a, b, and the exponent vector.
         std::pair<std::pair<long, long>, NTL::vec_GF2> get();
       private:
+        // Produces a possible row of a matrix given a and b.
+        // Returns a vector of length num_cols if
+        // a and b produce a valid row;
+        // otherwise returns a vector of the wrong length.
+        NTL::vec_GF2 generate_row(long a, long b);
+
         const NTL::ZZ& n_;
         const long B_;
         const NTL::ZZX& f_;

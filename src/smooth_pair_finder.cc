@@ -45,12 +45,7 @@ namespace gnfs {
         }
     }
 
-    vec_GF2 SmoothPairFinder::generate_row(long a, long b) {
-        vec_GF2 ret;  // if this length != num_cols, invalid
-        // we always return ret so we can have the return value optimzn
-        // even if ret ends up being invalid
-
-        // Modular factorbase and -1.
+    bool SmoothPairFinder::add_cols_modular(long a, long b, vec_GF2& ret) {
         ZZ ammb = a - m_ * b;
         ammb %= n_;
 
@@ -61,7 +56,6 @@ namespace gnfs {
             ret.append(GF2(0));
         }
 
-        // Prime factorization
         for (const auto& p : cols_modular_) {
             bool divcount = false;
             while (ammb % p == 0) {
@@ -71,9 +65,17 @@ namespace gnfs {
             ret.append(divcount ? GF2(1) : GF2(0));
         }
 
-        if (ammb != 1) {
-            // ammb is not B-smooth
+        return ammb == 1;
+    }
 
+    vec_GF2 SmoothPairFinder::generate_row(long a, long b) {
+        vec_GF2 ret;  // if this length != num_cols, invalid
+        // we always return ret so we can have the return value optimzn
+        // even if ret ends up being invalid
+
+        // Modular factorbase and -1.
+        if (!add_cols_modular(a, b, ret)) {
+            // ammb is not B-smooth
             // make SURE the length is invalid
             if (ret.length() == num_cols()) ret.append(GF2(0));
             return ret;

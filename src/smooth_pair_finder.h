@@ -29,6 +29,11 @@ namespace gnfs {
         // returning a, b, and the exponent vector.
         std::pair<std::pair<long, long>, NTL::vec_GF2> get();
       private:
+        // Adds entries to a GF2 corresponding to the
+        // modular factorbase of a-mb,
+        // and returns whether it completely factored.
+        bool add_cols_modular(long a, long b, NTL::vec_GF2& ret);
+
         // Produces a possible row of a matrix given a and b.
         // Returns a vector of length num_cols if
         // a and b produce a valid row;

@@ -9,8 +9,8 @@ namespace {
 }
 
 namespace gnfs {
-    SmoothPairFinder::SmoothPairFinder(const ZZ& n, long B, const ZZX& f)
-      : n_(n), B_(B), f_(f), M_(B), Mold_(0), a_(B), b_(-1) {
+    SmoothPairFinder::SmoothPairFinder(const ZZ& n, long B, const ZZX& f, const ZZ& m)
+      : n_(n), B_(B), f_(f), m_(m), M_(B), Mold_(0), a_(B), b_(-1) {
         ZZX fprime = diff(f);
 
         // Figure out what the factorbase columns represent.

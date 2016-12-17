@@ -14,8 +14,9 @@ namespace gnfs {
     class SmoothPairFinder {
       public:
         // Creates an apparatus to find B-smooth pairs and exponent vectors
-        // with parameters n and f.
-        SmoothPairFinder(const NTL::ZZ& n, long B, const NTL::ZZX& f);
+        // with parameters n, f, and m.
+        SmoothPairFinder(const NTL::ZZ& n, long B, const NTL::ZZX& f,
+                const NTL::ZZ& m);
 
         // Returns the number of columns in an exponent vector
         // returned from this apparatus.
@@ -31,6 +32,7 @@ namespace gnfs {
         const NTL::ZZ& n_;
         const long B_;
         const NTL::ZZX& f_;
+        const NTL::ZZ& m_;
 
         // Size of the region we're currently searching.
         // a_ and b_ range over [-M,M]\[-Mold,Mold] x (Mold,M].

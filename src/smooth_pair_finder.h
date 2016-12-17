@@ -9,8 +9,8 @@
 
 namespace gnfs {
     // Produces rows of a matrix in GF2 corresponding to pairs a,b, where
-    // - the ideal (a + \alpha b) is B-smooth and
-    // - a + mb is B-smooth mod n.
+    // - the ideal (a - \alpha b) is B-smooth and
+    // - a - mb is B-smooth mod n.
     class SmoothPairFinder {
       public:
         // Creates an apparatus to find B-smooth pairs and exponent vectors

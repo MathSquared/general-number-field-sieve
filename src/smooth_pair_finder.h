@@ -20,7 +20,7 @@ namespace gnfs {
         // Returns the number of columns in an exponent vector
         // returned from this apparatus.
         long num_cols() {
-            return cols_modular_.size() + cols_algebraic_.size()
+            return 1 + cols_modular_.size() + cols_algebraic_.size()
                 + cols_adleman_.size();
         }
 
@@ -49,6 +49,8 @@ namespace gnfs {
         // The entries in returned exponent vectors represent
         // modular factorbase entries, algebraic factorbase entries,
         // or Adleman columns.
+        // Also, the first column represents the "prime" -1
+        // in the modular factorbase.
         std::vector<long> cols_modular_;
         std::vector<std::pair<long, long>> cols_algebraic_;  // pairs (p,r)
         std::vector<std::pair<long, long>> cols_adleman_;  // pairs (q,s)

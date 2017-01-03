@@ -110,6 +110,18 @@ namespace gnfs {
         return namab == 1;
     }
 
+    bool SmoothPairFinder::add_cols_adleman(long a, long b, NTL::vec_GF2& ret) {
+        for (const auto& qs : cols_adleman_) {
+            long q = qs.first;
+            long s = qs.second;
+            long jacobi_top = a - b * s;
+            long jacobi = Jacobi(ZZ(jacobi_top % q), ZZ(q));
+            ret.append(jacobi == -1 ? GF2(1) : GF2(0));
+        }
+
+        return true;
+    }
+
     vec_GF2 SmoothPairFinder::generate_row(long a, long b) {
         vec_GF2 ret;  // if this length != num_cols, invalid
         // we always return ret so we can have the return value optimzn
@@ -131,7 +143,14 @@ namespace gnfs {
             return ret;
         }
 
-        // TODO do the Adleman portion
+        // Adleman columns.
+        if (!add_cols_adleman(a, b, ret)) {
+            // result is wrong
+            // make SURE the length is invalid
+            if (ret.length() == num_cols()) ret.append(GF2(0));
+            return ret;
+        }
+
         return ret;
     }
 

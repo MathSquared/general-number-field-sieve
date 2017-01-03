@@ -2,6 +2,7 @@
 
 #include <NTL/RR.h>
 
+#include "norm_finding.h"
 #include "util.h"
 
 namespace {
@@ -68,6 +69,47 @@ namespace gnfs {
         return ammb == 1;
     }
 
+    bool SmoothPairFinder::add_cols_algebraic(long a, long b, vec_GF2& ret) {
+        ZZ namab = eval_norm(f_, ZZ(a), ZZ(b));
+
+        // Iterate through each prime.
+        // For each one, find r first,
+        // then set the appropriate entry in the index vector.
+
+        // Here, we'll keep a cursor into cols_algebraic_.
+        auto alg_it = cols_algebraic_.cbegin();
+
+        for (const auto& p : cols_modular_) {
+            long r = lincon(a, b, p);
+
+            // Get the divcount as before
+            bool divcount = false;
+            while (namab % p == 0) {
+                namab /= p;
+                divcount ^= true;
+            }
+            GF2 to_add = divcount ? GF2(1) : GF2(0);
+
+            // Scroll past algebraic factorbase entries
+            // until we find where we want to add this item.
+            // Then add it.
+            while (alg_it->first != p || alg_it->second != r) {
+                ++alg_it;
+                ret.append(GF2(0));
+            }
+            ++alg_it;
+            ret.append(to_add);
+        }
+
+        // Add the rest of the zeros to the vector that we return.
+        while (alg_it != cols_algebraic_.cend()) {
+            ++alg_it;
+            ret.append(GF2(0));
+        }
+
+        return namab == 1;
+    }
+
     vec_GF2 SmoothPairFinder::generate_row(long a, long b) {
         vec_GF2 ret;  // if this length != num_cols, invalid
         // we always return ret so we can have the return value optimzn
@@ -81,7 +123,15 @@ namespace gnfs {
             return ret;
         }
 
-        // TODO do the algebraic factorbase portion
+        // Algebraic factorbase.
+        if (!add_cols_algebraic(a, b, ret)) {
+            // namab is not B-smooth
+            // make SURE the length is invalid
+            if (ret.length() == num_cols()) ret.append(GF2(0));
+            return ret;
+        }
+
+        // TODO do the Adleman portion
         return ret;
     }
 

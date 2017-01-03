@@ -34,6 +34,11 @@ namespace gnfs {
         // and returns whether it completely factored.
         bool add_cols_modular(long a, long b, NTL::vec_GF2& ret);
 
+        // Adds entries to a GF2 corresponding to the
+        // algebraic factorbase of a-\alpha b,
+        // and returns whether it completely factored.
+        bool add_cols_algebraic(long a, long b, NTL::vec_GF2& ret);
+
         // Produces a possible row of a matrix given a and b.
         // Returns a vector of length num_cols if
         // a and b produce a valid row;

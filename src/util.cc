@@ -18,4 +18,12 @@ namespace gnfs {
         }
         return ret;
     }
+
+    ZZ lincon(const ZZ& a, const ZZ& b, const ZZ& m) {
+        ZZ d, s, t;
+        XGCD(d, s, t, a, m);
+        if (b % d != 0)
+            return m;
+        return s * (b / d);
+    }
 }

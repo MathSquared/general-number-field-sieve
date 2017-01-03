@@ -14,6 +14,10 @@ namespace gnfs {
     // Turns a ZZ into a vec_GF2, MSB first,
     // length equal to the bitlength of bf.
     NTL::vec_GF2 bitfield(const NTL::ZZ& bf);
+
+    // Solves the linear congruence
+    // ax \equiv b (mod m).
+    NTL::ZZ lincon(const NTL::ZZ& a, const NTL::ZZ& b, const NTL::ZZ& m);
 }
 
 #endif

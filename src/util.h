@@ -17,6 +17,7 @@ namespace gnfs {
 
     // Solves the linear congruence
     // ax \equiv b (mod m).
+    long lincon(long a, long b, long m);
     NTL::ZZ lincon(const NTL::ZZ& a, const NTL::ZZ& b, const NTL::ZZ& m);
 }
 
